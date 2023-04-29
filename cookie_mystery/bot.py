@@ -5,7 +5,7 @@ import dotenv
 import os
 from string import punctuation
 from rich import print
-
+from typing import List
 
 dotenv.load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -27,7 +27,7 @@ def format_response(response):
 
 
 class Bot:
-    def __init__(self, name, char_prompt, model="gpt-3.5-turbo", temperature=0.7, max_tokens=150, delay=2):
+    def __init__(self, name:str, char_prompt:List[str]=[], model="gpt-3.5-turbo", temperature=0.7, max_tokens=150, delay=2):
         self.name = name
         self.char_prompt = char_prompt
         self.model = model
@@ -35,19 +35,14 @@ class Bot:
         self.max_tokens = max_tokens
         self.delay = delay
 
-        self.system_prompt = f"""You are stranded on an island. This is your character:\n\n{self.char_prompt}."""
         self.color = get_char_color()
         self.colored_name = f"[{self.color}]{self.name}[/{self.color}]"
         print(self.colored_name)
-        self.relationships = []
-        self.state = []
 
     async def respond(self, history: list):
         # history is a list of strings
         # here we convert to  a dictionary with a role and content
-        messages = [{"role": "system", "content": self.system_prompt}]
-        messages += [{"role": "system", "content": i} for i in self.relationships]
-        messages += [{"role": "system", "content": i} for i in self.state]
+        messages = [{"role": "system", "content": i} for i in self.char_prompt]
         for message in history:
             if message.startswith(self.name):
                 messages.append({"role": "assistant", "content": message})

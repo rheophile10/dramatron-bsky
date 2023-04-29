@@ -6,13 +6,13 @@ from rich import print
 from typing import List
 
 from cookie_mystery.bot import Bot
-from cookie_mystery.scene import make_scene, sexual_frustrations
-
+from cookie_mystery.scene import make_scene
+from cookie_mystery.party import Party
 class Channel:
-    def __init__(self, time_limit:int = 15, party = List[Bot]):
+    def __init__(self, party: Party, time_limit:int = 15):
         self.closed = False
         self.time_limit = time_limit
-        self.conversation = make_scene(party)
+        self.conversation = make_scene(party.bots)
         self.start = time.time()
 
     def get_history(self):
@@ -38,13 +38,12 @@ class Channel:
 
 if __name__ == "__main__":  
     from cookie_mystery.prompts import bots
-    bots = [Bot(name, system_prompt) for name, system_prompt in bots.items()]
-    sexual_frustrations(bots)
-    channel = Channel(party=bots)
+    party = Party(bots)
+    channel = Channel(party)
 
     # Run all the bots at once
     async def run_bots():
-        tasks = [bot.run(channel) for bot in bots]
+        tasks = [bot.run(channel) for bot in party.bots]
         await asyncio.gather(*tasks)
             
     asyncio.run(run_bots())
