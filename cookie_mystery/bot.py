@@ -53,11 +53,13 @@ class Bot:
         self.color = get_char_color(self.system_prompt)
         self.colored_name = f"[{self.color}]{self.name}[/{self.color}]"
         print(self.colored_name)
+        self.relationships = []
 
     async def respond(self, history: list):
         # history is a list of strings
         # here we convert to  a dictionary with a role and content
-        messages = [{"role": "system", "content": self.system_prompt},]
+        messages = [{"role": "system", "content": self.system_prompt}]
+        messages = [{"role": "system", "content": i} for i in self.relationships]
         for message in history:
             if message.startswith(self.name):
                 messages.append({"role": "assistant", "content": message})

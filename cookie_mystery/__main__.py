@@ -3,15 +3,17 @@ import time
 
 from rich import print
 
+from typing import List
+
 from cookie_mystery.bot import Bot
+from cookie_mystery.scene import make_scene, sexual_frustrations
 
 class Channel:
-    def __init__(self, time_limit = 15):
+    def __init__(self, time_limit:int = 15, party = List[Bot]):
         self.closed = False
         self.time_limit = time_limit
-        self.conversation = ["Narrator: Let the scene begin!"]
+        self.conversation = make_scene(party)
         self.start = time.time()
-
 
     def get_history(self):
         return self.conversation[-5:]
@@ -37,7 +39,8 @@ class Channel:
 if __name__ == "__main__":  
     from cookie_mystery.prompts import bots
     bots = [Bot(name, system_prompt) for name, system_prompt in bots.items()]
-    channel = Channel()
+    bots = sexual_frustrations(bots)
+    channel = Channel(party=bots)
 
     # Run all the bots at once
     async def run_bots():
