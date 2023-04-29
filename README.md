@@ -1,3 +1,5 @@
 ### Goofin off
 
-goofin off
+```
+python -m cookie_mystery
+```
