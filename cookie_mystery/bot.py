@@ -12,10 +12,10 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.organization = os.getenv("OPENAI_ORGANIZATION")
 
 def get_char_color():
-    colours= ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white', 'bright_black', 'bright_red', 'bright_green', 'bright_yellow', 'bright_blue', 'bright_magenta', 'bright_cyan', 'bright_white']
-    return colours[random.randint(0, len(colours))]
-    
-
+    colours= ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white', 'bright_black', 'bright_red', 
+              'bright_green', 'bright_yellow', 'bright_blue', 'bright_magenta', 'bright_cyan', 'bright_white']
+    idx = random.randint(0, len(colours)-1)
+    return colours[idx]
 
 def format_response(response):
     for i, char in enumerate(reversed(response)):
@@ -34,6 +34,7 @@ class Bot:
         self.temperature = temperature
         self.max_tokens = max_tokens
         self.delay = delay
+        self.thief = False
 
         self.color = get_char_color()
         self.colored_name = f"[{self.color}]{self.name}[/{self.color}]"

@@ -10,7 +10,7 @@ def make_scene(party:List[Bot])->List[str]:
     discoverer = party[random.randint(0,len(party)-1)]
     patsy = party[j]
     thief.char_prompt.append(f"You stole the cookies and you don't want anybody to know. If anybody other than the detective blames you, you will blame {patsy.name}")
-    thief.char_prompt.append(f"if the detective blames you, you will admit you ate the cookies")
+    thief.char_prompt.append(f"if the detective accuses you, you will admit you ate the cookies")
     scene = f"""
     This is an improve comedy and all actors are encouraged to act dramatically and humourously.
     
