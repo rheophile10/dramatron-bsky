@@ -9,6 +9,7 @@ from rich import print
 
 dotenv.load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.organization = os.getenv("OPENAI_ORGANIZATION")
 
 def get_char_color(system_prompt):
     prompt = f""""Your task is to generate an appropriate terminal color for the following character.

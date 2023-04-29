@@ -3,7 +3,7 @@ import time
 
 from rich import print
 
-from bot import Bot
+from cookie_mystery.bot import Bot
 
 class Channel:
     def __init__(self, time_limit = 15):
@@ -35,7 +35,7 @@ class Channel:
             self.get_user_input()
 
 if __name__ == "__main__":  
-    from prompts import bots
+    from cookie_mystery.prompts import bots
     bots = [Bot(name, system_prompt) for name, system_prompt in bots.items()]
     channel = Channel()
 
