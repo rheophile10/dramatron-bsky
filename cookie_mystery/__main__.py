@@ -19,7 +19,7 @@ class Channel:
         return self.conversation[-5:]
     
     def get_user_input(self):
-        print("[blue]Narrator[/blue]: ", end="")
+        print("[blue]Detective[/blue]: ", end="")
         text = input()
         self.start = time.time()
         if len(text) == 0:
@@ -27,7 +27,7 @@ class Channel:
         if text in ["quit", "exit", "q", "e"]:
             self.closed = True
             return
-        formatted_input = f"Narrator: {text}"
+        formatted_input = f"Detective: {text}"
         self.conversation.append(formatted_input)
 
     def add_message(self, message):
@@ -39,7 +39,7 @@ class Channel:
 if __name__ == "__main__":  
     from cookie_mystery.prompts import bots
     bots = [Bot(name, system_prompt) for name, system_prompt in bots.items()]
-    bots = sexual_frustrations(bots)
+    sexual_frustrations(bots)
     channel = Channel(party=bots)
 
     # Run all the bots at once
@@ -47,5 +47,4 @@ if __name__ == "__main__":
         tasks = [bot.run(channel) for bot in bots]
         await asyncio.gather(*tasks)
             
-
     asyncio.run(run_bots())

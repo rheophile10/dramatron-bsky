@@ -11,23 +11,9 @@ dotenv.load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.organization = os.getenv("OPENAI_ORGANIZATION")
 
-def get_char_color(system_prompt):
-    prompt = f""""Your task is to generate an appropriate terminal color for the following character.
-
-Respond only with one of the following colors:
-`['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white', 'bright_black', 'bright_red', 'bright_green', 'bright_yellow', 'bright_blue', 'bright_magenta', 'bright_cyan', 'bright_white']`
-
-```{system_prompt}```
-"""
-
-    color = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.0,
-        max_tokens=7,
-    )
-    answer = color.choices[0].message.content
-    return answer
+def get_char_color():
+    colours= ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white', 'bright_black', 'bright_red', 'bright_green', 'bright_yellow', 'bright_blue', 'bright_magenta', 'bright_cyan', 'bright_white']
+    return colours[random.randint(0, len(colours))]
     
 
 
@@ -49,17 +35,19 @@ class Bot:
         self.max_tokens = max_tokens
         self.delay = delay
 
-        self.system_prompt = f"""You are a character in a D&D game. You are {self.name}. This is your story and statblock:\n\n{self.char_prompt}."""
-        self.color = get_char_color(self.system_prompt)
+        self.system_prompt = f"""You are stranded on an island. This is your character:\n\n{self.char_prompt}."""
+        self.color = get_char_color()
         self.colored_name = f"[{self.color}]{self.name}[/{self.color}]"
         print(self.colored_name)
         self.relationships = []
+        self.state = []
 
     async def respond(self, history: list):
         # history is a list of strings
         # here we convert to  a dictionary with a role and content
         messages = [{"role": "system", "content": self.system_prompt}]
-        messages = [{"role": "system", "content": i} for i in self.relationships]
+        messages += [{"role": "system", "content": i} for i in self.relationships]
+        messages += [{"role": "system", "content": i} for i in self.state]
         for message in history:
             if message.startswith(self.name):
                 messages.append({"role": "assistant", "content": message})
